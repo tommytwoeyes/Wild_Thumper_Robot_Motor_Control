@@ -10,6 +10,7 @@
 
 #include <avr/io.h>
 #include <math.h>
+#include "motor_control.h"
 
 // VNH2SP30 motor controller IC pin definitions
 //		e.g. xxxx[0] controls motor channel 1 output

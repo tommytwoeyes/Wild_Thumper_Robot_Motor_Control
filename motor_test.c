@@ -11,7 +11,6 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "motor_control.h"
 
 int main(void)
 {
