@@ -242,6 +242,10 @@ void motorStop(uint8_t motor)
 		MOTOR_PORT &= ~(1 << inBpin[i]);
 	}
 
-/** TODO **/
-	/* Set motor PWM speed to 0 (zero) */
+	// 0% duty cycle == stopped
+	if (motor == 0) {
+		OCR0A = 0;
+	} else {
+		OCR0B = 0;
+	}
 }
