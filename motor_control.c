@@ -80,12 +80,14 @@ void initializeMotors(void)
 /** High-level motor control **/
 	void goForward(speed)
 	{
-
+		motorGo(LEFT_MOTOR, CCW, speed);
+		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
 	void goReverse()
 	{
-
+		motorGo(LEFT_MOTOR, CW, speed);
+		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
 	void goForwardLeft()
