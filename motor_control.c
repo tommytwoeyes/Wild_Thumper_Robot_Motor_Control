@@ -47,9 +47,6 @@ void initializePWM(void)
 	TCCR0B &= ~(1 << CS02);
 	TCCR0B &= ~(1 << CS01);
 	TCCR0B |= (1 << CS00);
-
-	// Set PWM pins for output
-	MOTOR_PWM_DDR |= (1 << pwmPin[0]) | (1 << pwmPin[2]);
 }
 
 // Initialize motor control pins
@@ -61,7 +58,7 @@ void initializeMotors(void)
 	for (outputPin=0; outputPin<2; outputPin++) {
 		MOTOR_DDR |= (1 << inApin[outputPin]);
 		MOTOR_DDR |= (1 << inBpin[outputPin]);
-		MOTOR_DDR |= (1 << pwmPin[outputPin]);
+		MOTOR_PWM_DDR |= (1 << pwmPin[outputPin]);
 	}
 
 	// Configure motor current-sense pins for INPUT
