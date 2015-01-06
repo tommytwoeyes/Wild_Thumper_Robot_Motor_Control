@@ -1,5 +1,5 @@
 /**
- * motor.h
+ * motor_control.h
  *
  * Motor control functions
  *
