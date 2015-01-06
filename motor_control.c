@@ -95,7 +95,7 @@ void initializeMotors(void)
 
 	void goHardLeft(speed)
 	{
-		motorGo(LEFT_MOTOR, BRAKEGND, 0);
+		motorStop(LEFT_MOTOR);
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
@@ -113,7 +113,7 @@ void initializeMotors(void)
 	void goHardRight(speed)
 	{
 		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, BRAKEGND, 0);
+		motorStop(RIGHT_MOTOR);
 	}
 
 	void goSoftRight()
@@ -129,23 +129,33 @@ void initializeMotors(void)
 
 	void goReverseHardLeft(speed)
 	{
-
+		motorStop(LEFT_MOTOR);
+		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
 	void goReverseSoftLeft(speed)
 	{
+		// Set right motor to half specified speed so it doesn't
+		// turn quite as sharply
+		uint8_t leftMotorSpeed = ceil(speed / 2);
 
+		motorGo(LEFT_MOTOR, CW, leftMotorSpeed);
+		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
 
 	void goReverseHardRight(speed)
 	{
-
+		motorGo(LEFT_MOTOR, CW, speed);
+		motorStop(RIGHT_MOTOR);
 	}
 
 	void goReverseSoftRight(speed)
 	{
+		uint8_t rightMotorSpeed = ceil(speed / 2);
 
+		motorGo(LEFT_MOTOR, CCW, speed);
+		motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
 	}
 
 
