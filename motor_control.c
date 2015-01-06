@@ -124,7 +124,7 @@ void initializeMotors(void)
 		uint8_t rightMotorSpeed = ceil(speed / 2);
 
 		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, CW);
+		motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
 	}
 
 
