@@ -41,7 +41,7 @@ void initializeMotors(void);
 
 /** Low-level motor control **/
 	// Low-level motor movement control
-	void motorGo(uint8_t motor, uint8_t pwm);
+	void motorGo(uint8_t motor, uint8_t direction, uint8_t pwm);
 
 	// Stop motor motion
 	void motorStop(uint8_t motor);
