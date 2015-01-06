@@ -29,18 +29,18 @@ void initializePWM(void);
 void initializeMotors(void);
 
 /** High-level motor control **/
-	void goForward(speed);
-	void goReverse(speed);
-	void goHardLeft(speed);
-	void goSoftLeft(speed);
-	void goHardRight(speed);
-	void goSoftRight(speed);
-	void goReverseHardLeft(speed);
-	void goReverseSoftLeft(speed);
-	void goReverseHardRight(speed);
-	void goReverseSoftRight(speed);
-	void pivotLeft(speed);
-	void pivotRight(speed);
+	void goForward(uint8_t speed);
+	void goReverse(uint8_t speed);
+	void goHardLeft(uint8_t speed);
+	void goSoftLeft(uint8_t speed);
+	void goHardRight(uint8_t speed);
+	void goSoftRight(uint8_t speed);
+	void goReverseHardLeft(uint8_t speed);
+	void goReverseSoftLeft(uint8_t speed);
+	void goReverseHardRight(uint8_t speed);
+	void goReverseSoftRight(uint8_t speed);
+	void pivotLeft(uint8_t speed);
+	void pivotRight(uint8_t speed);
 
 
 /** Low-level motor control **/
