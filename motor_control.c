@@ -1,7 +1,9 @@
 /**
  * motor.c
  *
- * Motor control functions
+ * Motor control functions for the Monster Moto Shield
+ * Borrowed in part from Sparkfun:
+ * https://github.com/sparkfun/Monster_Moto_Shield
  *
  * @author Tom Malone
  */
@@ -76,7 +78,7 @@ void initializeMotors(void)
 
 
 /** High-level motor control **/
-	void goForward()
+	void goForward(speed)
 	{
 
 	}
@@ -140,7 +142,7 @@ void initializeMotors(void)
  * 									0 = Brake to VCC (??? - this was copied from Sparkfun's library. See link in comments at top)
  * 									1 = Clockwise
  * 									2 = CounterClockwise
- * 									3 = Brake to GND
+ * 									3 = Brake to GND (??? - this was copied from Sparkfun's library. See link in comments at top)
  *
  * @param speed : integer : Controls motor PWM duty cycle
  * 						   Should be a value between 0 and 255.
