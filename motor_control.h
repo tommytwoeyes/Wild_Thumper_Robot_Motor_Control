@@ -12,6 +12,8 @@
 // Motor variables
 #define MOTOR_DDR					DDRD
 #define MOTOR_PORT					PORTD
+#define MOTOR_PWM_DDR				DDRB
+#define MOTOR_PWM_PORT				PORTB
 #define MOTOR_CURRENT_SENSE_DDR		DDRB
 #define MOTOR_CURRENT_SENSE_PORT	PORTB
 #define BRAKEVCC					0
