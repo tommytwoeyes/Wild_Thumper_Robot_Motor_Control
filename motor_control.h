@@ -20,6 +20,9 @@
 #define BRAKEGND					3
 #define CS_THRESHOLD				17
 
+/** Initialization functions **/
+void initializePWM(void);
+void initializeMotors(void);
 
 /** High-level motor control **/
 	void goForward();
