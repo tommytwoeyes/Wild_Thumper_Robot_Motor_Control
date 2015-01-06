@@ -20,7 +20,7 @@
 #define MOTOR_CURRENT_SENSE_PORT	PORTB
 #define BRAKEVCC					0
 #define CW							1
-#define CCW
+#define CCW                         2
 #define BRAKEGND					3
 #define CS_THRESHOLD				17
 
