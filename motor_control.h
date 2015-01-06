@@ -10,6 +10,8 @@
 #define MonsterMotoShield_h
 
 // Motor variables
+#define LEFT_MOTOR					0
+#define RIGHT_MOTOR					1
 #define MOTOR_DDR					DDRD
 #define MOTOR_PORT					PORTD
 #define MOTOR_PWM_DDR				DDRB
