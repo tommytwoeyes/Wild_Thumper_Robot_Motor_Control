@@ -9,6 +9,8 @@
 #ifndef MonsterMotoShield_h
 #define MonsterMotoShield_h
 
+#include <stdint.h>
+
 // Motor variables
 #define LEFT_MOTOR					0
 #define RIGHT_MOTOR					1
