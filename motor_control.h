@@ -20,7 +20,7 @@
 #define MOTOR_CURRENT_SENSE_PORT	PORTB
 #define BRAKEVCC					0
 #define CW							1
-#define CCW                         2
+#define CCW							2
 #define BRAKEGND					3
 #define CS_THRESHOLD				17
 
@@ -45,7 +45,7 @@ void initializeMotors(void);
 
 /** Low-level motor control **/
 	// Low-level motor movement control
-	void motorGo(uint8_t motor, uint8_t direction, uint8_t pwm);
+	void motorGo(uint8_t motor, uint8_t direction, uint8_t speed);
 
 	// Stop motor motion
 	void motorStop(uint8_t motor);
