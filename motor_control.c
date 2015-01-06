@@ -11,12 +11,39 @@
 //			 xxxx[1] controls motor channel 2 output
 int inApin[2]	= 		{PD0, PD1};
 int inBpin[2]	=		{PD2, PD3};
-int pwmPin[2]	=		{PD4, PD5};
+int pwmPin[2]	=		{PB3, PB4};
 int csPin[2]	=		{PB2, PB3};
 
 void initializePWM(void)
 {
+	/** Use Phase Correct PWM mode **/
 
+	// Use Inverting mode - output HIGH during count up, LOW during count down
+	//		- Bits COM0n1 and COM0n0 in the TCCR0n registers
+	//		  (timer/counter control registers) are set to 1
+	//		  Note: you have to set COM0A1, COM0A0 and COM0B1, COM0B0
+	// 		  in order to use both OC0A and OC0B pwm pins
+	TCCR0A |= (1 << COM0A1) | (1 << COM0A0) | (1 << COM0B1) | (1 << COM0B0);
+
+	// Use Phase-Correct PWM mode
+	// Counter counts up to TOP of 255 (as opposed to user-defined TOP value)
+	//		- WGM02 = 0 (in register TCCR0B), WGM01 = 0, WGM00 = 1 (register TCCR0A)
+	TCCR0A |= (1 << WGM00);
+	TCCR0A &= ~(1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
+	TCCR0B &= ~(1 << WGM02);
+
+	// Configure clock speed: the Monster Moto shield can only handle
+	//		up to 20kHz PWM frequency, so:
+	//		use IO clock with no prescaling
+	//		F_CPU / Prescaler value / Number of steps
+	//		(256 for 8-bit timer, 65536 for 16-bit timer)
+	//		1000000 / 1 / 256 = about 3.9kHz
+	TCCR0B &= ~(1 << CS02);
+	TCCR0B &= ~(1 << CS01);
+	TCCR0B |= (1 << CS00);
+
+	// Set PWM pins for output
+	MOTOR_PWM_DDR |= (1 << pwmPin[0]) | (1 << pwmPin[2]);
 }
 
 // Initialize motor control pins
