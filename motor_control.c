@@ -113,13 +113,23 @@ void initializeMotors(void)
 	}
 
 
-	void goReverseLeft()
+	void goReverseHardLeft(speed)
+	{
+
+	}
+
+	void goReverseSoftLeft(speed)
 	{
 
 	}
 
 
-	void goReverseRight()
+	void goReverseHardRight(speed)
+	{
+
+	}
+
+	void goReverseSoftRight(speed)
 	{
 
 	}
