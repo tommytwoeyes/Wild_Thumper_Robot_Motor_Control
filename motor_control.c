@@ -159,15 +159,17 @@ void initializeMotors(void)
 	}
 
 
-	void pivoteLeft()
+	void pivoteLeft(speed)
 	{
-
+		motorGo(LEFT_MOTOR, CW, speed);
+		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
 
-	void pivotRight()
+	void pivotRight(speed)
 	{
-
+		motorGo(LEFT_MOTOR, CCW, speed);
+		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
 
