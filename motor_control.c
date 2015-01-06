@@ -200,7 +200,7 @@ void initializeMotors(void)
 	 * 						   Larger numbers = more speed
 	 * 						   Smaller numbers = less speed
 	 */
-	void motorGo(uint8_t motor, uint8_t direction, uint8_t pwm)
+	void motorGo(uint8_t motor, uint8_t direction, uint8_t speed)
 	{
 		if (motor <= 1) {     // Ensure motor ID is valid
 
