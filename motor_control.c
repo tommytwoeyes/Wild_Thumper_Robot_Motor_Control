@@ -29,7 +29,7 @@ void initializePWM(void)
 	//		  (timer/counter control registers) are set to 1
 	//		  Note: you have to set COM0A1, COM0A0 and COM0B1, COM0B0
 	// 		  in order to use both OC0A and OC0B pwm pins
-	TCCR0A |= (1 << COM0A1) | (1 << COM0A0) | (1 << COM0B1) | (1 << COM0B0);
+	TCCR0A |= (1 << COM0A1) | (1 << COM0A0);
 
 	// Use Phase-Correct PWM mode
 	// Counter counts up to TOP of 255 (as opposed to user-defined TOP value)
