@@ -16,6 +16,7 @@
 int main(void)
 {
 	// Initialization
+	initializePWM();
 	initializeMotors();
 
 	while (1) {
