@@ -18,16 +18,7 @@ int main(void)
 	// Initialization
 	initializeMotors();
 
-	goForward(150);
-	_delay_ms(2000);
-
-	goReverse(150);
-	_delay_ms(2000);
-
-	pivotLeft(100);
-	_delay_ms(2000);
-
-	pivotRight(100);
-	_delay_ms(2000);
-
+	while (1) {
+		goForward(150);
+	}
 }
