@@ -31,11 +31,11 @@ BAUD = 9600
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## This is where your main() routine lives
-MAIN = blink.c
+MAIN = motor_test.c
 
 ## If you've split your program into multiple .c / .h files,
 ## include the additional source (in same directory) here
-LOCAL_SOURCE =
+LOCAL_SOURCE = motor_control.h motor_control.c
 
 ## Here you can link to one more directory (and multiple .c files)
 #EXTRA_SOURCE_DIR = ../../AVR-Programming-Library/
