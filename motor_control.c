@@ -1,5 +1,5 @@
 /**
- * motor.c
+ * motor_control.c
  *
  * Motor control functions for the Monster Moto Shield
  * Borrowed in part from Sparkfun:
@@ -8,8 +8,8 @@
  * @author Tom Malone
  */
 
-#include <avr/io.h>
 #include <math.h>
+#include <avr/io.h>
 #include "motor_control.h"
 
 // VNH2SP30 motor controller IC pin definitions
