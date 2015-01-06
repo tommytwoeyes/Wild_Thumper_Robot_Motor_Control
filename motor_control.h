@@ -29,25 +29,24 @@ void initializePWM(void);
 void initializeMotors(void);
 
 /** High-level motor control **/
-	void goForward(uint8_t speed);
-	void goReverse(uint8_t speed);
-	void goHardLeft(uint8_t speed);
-	void goSoftLeft(uint8_t speed);
-	void goHardRight(uint8_t speed);
-	void goSoftRight(uint8_t speed);
-	void goReverseHardLeft(uint8_t speed);
-	void goReverseSoftLeft(uint8_t speed);
-	void goReverseHardRight(uint8_t speed);
-	void goReverseSoftRight(uint8_t speed);
-	void pivotLeft(uint8_t speed);
-	void pivotRight(uint8_t speed);
-
+void goForward(uint8_t speed);
+void goReverse(uint8_t speed);
+void goHardLeft(uint8_t speed);
+void goSoftLeft(uint8_t speed);
+void goHardRight(uint8_t speed);
+void goSoftRight(uint8_t speed);
+void goReverseHardLeft(uint8_t speed);
+void goReverseSoftLeft(uint8_t speed);
+void goReverseHardRight(uint8_t speed);
+void goReverseSoftRight(uint8_t speed);
+void pivotLeft(uint8_t speed);
+void pivotRight(uint8_t speed);
 
 /** Low-level motor control **/
-	// Low-level motor movement control
-	void motorGo(uint8_t motor, uint8_t direction, uint8_t speed);
+// Low-level motor movement control
+void motorGo(uint8_t motor, uint8_t direction, uint8_t speed);
 
-	// Stop motor motion
-	void motorStop(uint8_t motor);
+// Stop motor motion
+void motorStop(uint8_t motor);
 
 #endif

@@ -82,172 +82,172 @@ void initializeMotors(void)
 
 
 /** High-level motor control **/
-	void goForward(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, CW, speed);
-	}
+void goForward(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CCW, speed);
+	motorGo(RIGHT_MOTOR, CW, speed);
+}
 
-	void goReverse(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CW, speed);
-		motorGo(RIGHT_MOTOR, CCW, speed);
-	}
+void goReverse(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CW, speed);
+	motorGo(RIGHT_MOTOR, CCW, speed);
+}
 
-	void goHardLeft(uint8_t speed)
-	{
-		motorStop(LEFT_MOTOR);
-		motorGo(RIGHT_MOTOR, CW, speed);
-	}
+void goHardLeft(uint8_t speed)
+{
+	motorStop(LEFT_MOTOR);
+	motorGo(RIGHT_MOTOR, CW, speed);
+}
 
-	void goSoftLeft(uint8_t speed)
-	{
-		// Set left motor to half specified speed so it doesn't
-		// turn quite as sharply
-		uint8_t leftMotorSpeed = ceil(speed / 2);
+void goSoftLeft(uint8_t speed)
+{
+	// Set left motor to half specified speed so it doesn't
+	// turn quite as sharply
+	uint8_t leftMotorSpeed = ceil(speed / 2);
 
-		motorGo(LEFT_MOTOR, CCW, leftMotorSpeed);
-		motorGo(RIGHT_MOTOR, CW, speed);
-	}
-
-
-	void goHardRight(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CCW, speed);
-		motorStop(RIGHT_MOTOR);
-	}
-
-	void goSoftRight(uint8_t speed)
-	{
-		// Set right motor to half specified speed so it doesn't
-		// turn quite as sharply
-		uint8_t rightMotorSpeed = ceil(speed / 2);
-
-		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
-	}
+	motorGo(LEFT_MOTOR, CCW, leftMotorSpeed);
+	motorGo(RIGHT_MOTOR, CW, speed);
+}
 
 
-	void goReverseHardLeft(uint8_t speed)
-	{
-		motorStop(LEFT_MOTOR);
-		motorGo(RIGHT_MOTOR, CCW, speed);
-	}
+void goHardRight(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CCW, speed);
+	motorStop(RIGHT_MOTOR);
+}
 
-	void goReverseSoftLeft(uint8_t speed)
-	{
-		// Set right motor to half specified speed so it doesn't
-		// turn quite as sharply
-		uint8_t leftMotorSpeed = ceil(speed / 2);
+void goSoftRight(uint8_t speed)
+{
+	// Set right motor to half specified speed so it doesn't
+	// turn quite as sharply
+	uint8_t rightMotorSpeed = ceil(speed / 2);
 
-		motorGo(LEFT_MOTOR, CW, leftMotorSpeed);
-		motorGo(RIGHT_MOTOR, CCW, speed);
-	}
-
-
-	void goReverseHardRight(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CW, speed);
-		motorStop(RIGHT_MOTOR);
-	}
-
-	void goReverseSoftRight(uint8_t speed)
-	{
-		uint8_t rightMotorSpeed = ceil(speed / 2);
-
-		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
-	}
+	motorGo(LEFT_MOTOR, CCW, speed);
+	motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
+}
 
 
-	void pivotLeft(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CW, speed);
-		motorGo(RIGHT_MOTOR, CW, speed);
-	}
+void goReverseHardLeft(uint8_t speed)
+{
+	motorStop(LEFT_MOTOR);
+	motorGo(RIGHT_MOTOR, CCW, speed);
+}
+
+void goReverseSoftLeft(uint8_t speed)
+{
+	// Set right motor to half specified speed so it doesn't
+	// turn quite as sharply
+	uint8_t leftMotorSpeed = ceil(speed / 2);
+
+	motorGo(LEFT_MOTOR, CW, leftMotorSpeed);
+	motorGo(RIGHT_MOTOR, CCW, speed);
+}
 
 
-	void pivotRight(uint8_t speed)
-	{
-		motorGo(LEFT_MOTOR, CCW, speed);
-		motorGo(RIGHT_MOTOR, CCW, speed);
-	}
+void goReverseHardRight(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CW, speed);
+	motorStop(RIGHT_MOTOR);
+}
+
+void goReverseSoftRight(uint8_t speed)
+{
+	uint8_t rightMotorSpeed = ceil(speed / 2);
+
+	motorGo(LEFT_MOTOR, CCW, speed);
+	motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
+}
+
+
+void pivotLeft(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CW, speed);
+	motorGo(RIGHT_MOTOR, CW, speed);
+}
+
+
+void pivotRight(uint8_t speed)
+{
+	motorGo(LEFT_MOTOR, CCW, speed);
+	motorGo(RIGHT_MOTOR, CCW, speed);
+}
 
 
 /** Low-level motor control **/
 
-	/**
-	 * Will power motor in specified direction. Motor will continue to
-	 * rotate in the specified direction at the specified speed until
-	 * it's behavior is modified by another function call (to this or
-	 * another function)
-	 *
-	 * @param motor : integer : Should be either 0 or 1. Selects motor to
-	 * 							 act on.
-	 * 							 Corresponds to
-	 * 							 the index of the motor in one of the arrays
-	 * 							 inApin, inBpin, or pwmPin
-	 *
-	 * @param direction : integer : Should be between 0 and 3, with the
-	 * 								 following meaning:
-	 * 									0 = Brake to VCC (??? - this was copied from Sparkfun's library. See link in comments at top)
-	 * 									1 = Clockwise
-	 * 									2 = CounterClockwise
-	 * 									3 = Brake to GND (??? - this was copied from Sparkfun's library. See link in comments at top)
-	 *
-	 * @param speed : integer : Controls motor PWM duty cycle
-	 * 						   Should be a value between 0 and 255.
-	 * 						   Larger numbers = more speed
-	 * 						   Smaller numbers = less speed
-	 */
-	void motorGo(uint8_t motor, uint8_t direction, uint8_t speed)
-	{
-		if (motor <= 1) {     // Ensure motor ID is valid
+/**
+ * Will power motor in specified direction. Motor will continue to
+ * rotate in the specified direction at the specified speed until
+ * it's behavior is modified by another function call (to this or
+ * another function)
+ *
+ * @param motor : integer : Should be either 0 or 1. Selects motor to
+ * 							 act on.
+ * 							 Corresponds to
+ * 							 the index of the motor in one of the arrays
+ * 							 inApin, inBpin, or pwmPin
+ *
+ * @param direction : integer : Should be between 0 and 3, with the
+ * 								 following meaning:
+ * 									0 = Brake to VCC (??? - this was copied from Sparkfun's library. See link in comments at top)
+ * 									1 = Clockwise
+ * 									2 = CounterClockwise
+ * 									3 = Brake to GND (??? - this was copied from Sparkfun's library. See link in comments at top)
+ *
+ * @param speed : integer : Controls motor PWM duty cycle
+ * 						   Should be a value between 0 and 255.
+ * 						   Larger numbers = more speed
+ * 						   Smaller numbers = less speed
+ */
+void motorGo(uint8_t motor, uint8_t direction, uint8_t speed)
+{
+	if (motor <= 1) {     // Ensure motor ID is valid
 
-			if (direction <= 4) {	// Ensure direction is valid
+		if (direction <= 4) {	// Ensure direction is valid
 
-				// Set inA[motor]
-				if (direction <= 1)
-					MOTOR_PORT |= (1 << inApin[motor]);
-				else
-					MOTOR_PORT &= (1 << inApin[motor]);
+			// Set inA[motor]
+			if (direction <= 1)
+				MOTOR_PORT |= (1 << inApin[motor]);
+			else
+				MOTOR_PORT &= (1 << inApin[motor]);
 
-				// Set inB[motor]
-				if ( (direction == 0) || (direction == 2) )
-					MOTOR_PORT |= (1 << inBpin[motor]);
-				else
-					MOTOR_PORT &= ~(1 << inBpin[motor]);
+			// Set inB[motor]
+			if ( (direction == 0) || (direction == 2) )
+				MOTOR_PORT |= (1 << inBpin[motor]);
+			else
+				MOTOR_PORT &= ~(1 << inBpin[motor]);
 
 
-				// Set speed
-				if (speed < 0)
-					speed = 0;
-				if (speed > 255)
-					speed = 255;
+			// Set speed
+			if (speed < 0)
+				speed = 0;
+			if (speed > 255)
+				speed = 255;
 
-				if (motor == 0) {
-					OCR0A = speed;
-				} else {
-					OCR0B = speed;
-				}
+			if (motor == 0) {
+				OCR0A = speed;
+			} else {
+				OCR0B = speed;
 			}
 		}
 	}
+}
 
-	// Stop motor motion
-	void motorStop(uint8_t motor)
-	{
-		int i; // counter
+// Stop motor motion
+void motorStop(uint8_t motor)
+{
+	int i; // counter
 
-		for (i=0; i<2; i++) {
-			MOTOR_PORT &= ~(1 << inApin[i]);
-			MOTOR_PORT &= ~(1 << inBpin[i]);
-		}
-
-		// 0% duty cycle == stopped
-		if (motor == 0) {
-			OCR0A = 0;
-		} else {
-			OCR0B = 0;
-		}
+	for (i=0; i<2; i++) {
+		MOTOR_PORT &= ~(1 << inApin[i]);
+		MOTOR_PORT &= ~(1 << inBpin[i]);
 	}
+
+	// 0% duty cycle == stopped
+	if (motor == 0) {
+		OCR0A = 0;
+	} else {
+		OCR0B = 0;
+	}
+}
