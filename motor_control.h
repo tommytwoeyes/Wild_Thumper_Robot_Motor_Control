@@ -39,7 +39,7 @@ void initializeMotors(void);
 	void goReverseSoftLeft(speed);
 	void goReverseHardRight(speed);
 	void goReverseSoftRight(speed);
-	void pivoteLeft(speed);
+	void pivotLeft(speed);
 	void pivotRight(speed);
 
 
