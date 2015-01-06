@@ -14,6 +14,11 @@ int inBpin[2]	=		{PD2, PD3};
 int pwmPin[2]	=		{PD4, PD5};
 int csPin[2]	=		{PB2, PB3};
 
+void initializePWM(void)
+{
+
+}
+
 // Initialize motor control pins
 void initializeMotors(void)
 {
