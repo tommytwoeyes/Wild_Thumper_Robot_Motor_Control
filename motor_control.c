@@ -101,7 +101,8 @@ void initializeMotors(void)
 
 	void goSoftLeft(speed)
 	{
-		// Set left motor to half speed so it doesn't turn quite as sharply
+		// Set left motor to half specified speed so it doesn't
+		// turn quite as sharply
 		uint8_t leftMotorSpeed = ceil(speed / 2);
 
 		motorGo(LEFT_MOTOR, CCW, leftMotorSpeed);
@@ -109,14 +110,20 @@ void initializeMotors(void)
 	}
 
 
-	void goHardRight()
+	void goHardRight(speed)
 	{
-
+		motorGo(LEFT_MOTOR, CCW, speed);
+		motorGo(RIGHT_MOTOR, BRAKEGND, 0);
 	}
 
 	void goSoftRight()
 	{
+		// Set right motor to half specified speed so it doesn't
+		// turn quite as sharply
+		uint8_t rightMotorSpeed = ceil(speed / 2);
 
+		motorGo(LEFT_MOTOR, CCW, speed);
+		motorGo(RIGHT_MOTOR, CW);
 	}
 
 
