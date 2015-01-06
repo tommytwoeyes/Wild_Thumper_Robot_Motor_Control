@@ -39,8 +39,8 @@ void initializeMotors(void);
 	void goReverseSoftLeft(speed);
 	void goReverseHardRight(speed);
 	void goReverseSoftRight(speed);
-	void pivoteLeft();
-	void pivotRight();
+	void pivoteLeft(speed);
+	void pivotRight(speed);
 
 
 /** Low-level motor control **/
