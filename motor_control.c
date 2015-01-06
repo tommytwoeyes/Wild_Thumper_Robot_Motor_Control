@@ -8,6 +8,9 @@
  * @author Tom Malone
  */
 
+#include <avr/io.h>
+#include <math.h>
+
 // VNH2SP30 motor controller IC pin definitions
 //		e.g. xxxx[0] controls motor channel 1 output
 //			 xxxx[1] controls motor channel 2 output
@@ -96,9 +99,13 @@ void initializeMotors(void)
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
-	void goSoftLeft()
+	void goSoftLeft(speed)
 	{
+		// Set left motor to half speed so it doesn't turn quite as sharply
+		uint8_t leftMotorSpeed = ceil(speed / 2);
 
+		motorGo(LEFT_MOTOR, CCW, leftMotorSpeed);
+		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
 
