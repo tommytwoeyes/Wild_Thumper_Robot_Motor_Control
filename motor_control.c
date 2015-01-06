@@ -84,15 +84,16 @@ void initializeMotors(void)
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
-	void goReverse()
+	void goReverse(speed)
 	{
 		motorGo(LEFT_MOTOR, CW, speed);
 		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
-	void goHardLeft()
+	void goHardLeft(speed)
 	{
-
+		motorGo(LEFT_MOTOR, BRAKEGND, 0);
+		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
 	void goSoftLeft()
