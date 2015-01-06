@@ -90,13 +90,13 @@ void initializeMotors(void)
 		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
-	void goForwardLeft()
+	void goHardLeft()
 	{
 
 	}
 
 
-	void goForwardRight()
+	void goHardRight()
 	{
 
 	}
