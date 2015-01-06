@@ -81,25 +81,25 @@ void initializeMotors(void)
 
 
 /** High-level motor control **/
-	void goForward(speed)
+	void goForward(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CCW, speed);
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
-	void goReverse(speed)
+	void goReverse(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CW, speed);
 		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
-	void goHardLeft(speed)
+	void goHardLeft(uint8_t speed)
 	{
 		motorStop(LEFT_MOTOR);
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
-	void goSoftLeft(speed)
+	void goSoftLeft(uint8_t speed)
 	{
 		// Set left motor to half specified speed so it doesn't
 		// turn quite as sharply
@@ -110,13 +110,13 @@ void initializeMotors(void)
 	}
 
 
-	void goHardRight(speed)
+	void goHardRight(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CCW, speed);
 		motorStop(RIGHT_MOTOR);
 	}
 
-	void goSoftRight()
+	void goSoftRight(uint8_t speed)
 	{
 		// Set right motor to half specified speed so it doesn't
 		// turn quite as sharply
@@ -127,13 +127,13 @@ void initializeMotors(void)
 	}
 
 
-	void goReverseHardLeft(speed)
+	void goReverseHardLeft(uint8_t speed)
 	{
 		motorStop(LEFT_MOTOR);
 		motorGo(RIGHT_MOTOR, CCW, speed);
 	}
 
-	void goReverseSoftLeft(speed)
+	void goReverseSoftLeft(uint8_t speed)
 	{
 		// Set right motor to half specified speed so it doesn't
 		// turn quite as sharply
@@ -144,13 +144,13 @@ void initializeMotors(void)
 	}
 
 
-	void goReverseHardRight(speed)
+	void goReverseHardRight(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CW, speed);
 		motorStop(RIGHT_MOTOR);
 	}
 
-	void goReverseSoftRight(speed)
+	void goReverseSoftRight(uint8_t speed)
 	{
 		uint8_t rightMotorSpeed = ceil(speed / 2);
 
@@ -159,14 +159,14 @@ void initializeMotors(void)
 	}
 
 
-	void pivotLeft(speed)
+	void pivotLeft(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CW, speed);
 		motorGo(RIGHT_MOTOR, CW, speed);
 	}
 
 
-	void pivotRight(speed)
+	void pivotRight(uint8_t speed)
 	{
 		motorGo(LEFT_MOTOR, CCW, speed);
 		motorGo(RIGHT_MOTOR, CCW, speed);
