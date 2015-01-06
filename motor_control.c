@@ -95,8 +95,18 @@ void initializeMotors(void)
 
 	}
 
+	void goSoftLeft()
+	{
+
+	}
+
 
 	void goHardRight()
+	{
+
+	}
+
+	void goSoftRight()
 	{
 
 	}

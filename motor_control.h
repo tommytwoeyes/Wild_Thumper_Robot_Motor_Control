@@ -31,8 +31,10 @@ void initializeMotors(void);
 /** High-level motor control **/
 	void goForward();
 	void goReverse();
-	void goForwardLeft();
-	void goForwardRight();
+	void goHardLeft();
+	void goSoftLeft();
+	void goHardRight();
+	void goSoftRight();
 	void goReverseLeft();
 	void goReverseRight();
 	void turnInPlaceLeft();
