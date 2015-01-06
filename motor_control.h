@@ -37,8 +37,8 @@ void initializeMotors(void);
 	void goSoftRight();
 	void goReverseLeft();
 	void goReverseRight();
-	void turnInPlaceLeft();
-	void turnInPlaceRight();
+	void pivoteLeft();
+	void pivotRight();
 
 
 /** Low-level motor control **/

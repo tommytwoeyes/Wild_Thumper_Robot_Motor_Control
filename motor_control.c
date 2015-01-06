@@ -124,13 +124,13 @@ void initializeMotors(void)
 	}
 
 
-	void turnInPlaceLeft()
+	void pivoteLeft()
 	{
 
 	}
 
 
-	void turnInPlaceRight()
+	void pivotRight()
 	{
 
 	}
