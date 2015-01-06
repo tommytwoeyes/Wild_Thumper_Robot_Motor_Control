@@ -34,22 +34,122 @@ void initializeMotors(void)
 	for (inputPin=0; inputPin<2; inputPin++) {
 		MOTOR_CURRENT_SENSE_DDR &= ~(1 << csPin[inputPin]);
 	}
+
+	// Ensure the motors are braked when initialized
+	for (int i=0; i<2; i++) {
+		MOTOR_PORT &= ~(1 << inApin[i]);
+		MOTOR_PORT &= ~(1 << inBpin[i]);
+	}
 }
 
-// Move motor forward
-void motorGoForward(uint8_t motor, uint8_t pwm)
+
+/** High-level motor control **/
+	void goForward()
+	{
+
+	}
+
+	void goReverse()
+	{
+
+	}
+
+	void goForwardLeft()
+	{
+
+	}
+
+
+	void goForwardRight()
+	{
+
+	}
+
+
+	void goReverseLeft()
+	{
+
+	}
+
+
+	void goReverseRight()
+	{
+
+	}
+
+
+	void turnInPlaceLeft()
+	{
+
+	}
+
+
+	void turnInPlaceRight()
+	{
+
+	}
+
+
+/**
+ * Low-level motor control
+ * Will power motor in specified direction. Motor will continue to
+ * rotate in the specified direction at the specified speed until
+ * it's behavior is modified by another function call (to this or
+ * another function)
+ *
+ * @param motor : integer : Should be either 0 or 1. Selects motor to
+ * 							 act on.
+ * 							 Corresponds to
+ * 							 the index of the motor in one of the arrays
+ * 							 inApin, inBpin, or pwmPin
+ *
+ * @param direction : integer : Should be between 0 and 3, with the
+ * 								 following meaning:
+ * 									0 = Brake to VCC (??? - this was copied from Sparkfun's library. See link in comments at top)
+ * 									1 = Clockwise
+ * 									2 = CounterClockwise
+ * 									3 = Brake to GND
+ *
+ * @param pwm : integer : Controls motor speed
+ * 						   Should be a value between 0 and 1023.
+ * 						   Larger numbers = more speed
+ * 						   Smaller numbers = less speed
+ */
+void motorGo(uint8_t motor, uint8_t direction, uint8_t pwm)
 {
+	if (motor <= 1) {     // Ensure motor ID is valid
 
-}
+		if (direction <= 4) {	// Ensure direction is valid
 
-// Move motor in reverse
-void motorGoReverse(uint8_t motor, uint8_t pwm)
-{
+			// Set inA[motor]
+			if (direction <= 1)
+				MOTOR_PORT |= (1 << inApin[motor]);
+			else
+				MOTOR_PORT &= (1 << inApin[motor]);
 
+			// Set inB[motor]
+			if ( (direction == 0) || (direction == 2) )
+				MOTOR_PORT |= (1 << inBpin[motor]);
+			else
+				MOTOR_PORT &= ~(1 << inBpin[motor]);
+
+
+			// Set speed
+			/** TODO : PWM here **/
+		}
+	}
 }
 
 // Stop motor motion
 void motorStop(uint8_t motor)
 {
+	int i; // counter
 
+	for (i=0; i<2; i++) {
+		MOTOR_PORT &= ~(1 << inApin[i]);
+		MOTOR_PORT &= ~(1 << inBpin[i]);
+	}
+
+/** TODO **/
+	/* Set motor PWM speed to 0 (zero) */
 }
