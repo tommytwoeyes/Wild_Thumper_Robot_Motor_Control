@@ -11,7 +11,7 @@
 //			 xxxx[1] controls motor channel 2 output
 int inApin[2]	= 		{PD0, PD1};
 int inBpin[2]	=		{PD2, PD3};
-int pwmPin[2]	=		{PB3, PB4};
+int pwmPin[2]	=		{PB3, PB4};   // PWM set using OCR0A (PB3) and OCR0B (PB4)
 int csPin[2]	=		{PB2, PB3};
 
 void initializePWM(void)
@@ -142,8 +142,8 @@ void initializeMotors(void)
  * 									2 = CounterClockwise
  * 									3 = Brake to GND
  *
- * @param pwm : integer : Controls motor speed
- * 						   Should be a value between 0 and 1023.
+ * @param speed : integer : Controls motor PWM duty cycle
+ * 						   Should be a value between 0 and 255.
  * 						   Larger numbers = more speed
  * 						   Smaller numbers = less speed
  */
@@ -167,7 +167,16 @@ void motorGo(uint8_t motor, uint8_t direction, uint8_t pwm)
 
 
 			// Set speed
-			/** TODO : PWM here **/
+			if (speed < 0)
+				speed = 0;
+			if (speed > 255)
+				speed = 255;
+
+			if (motor == 0) {
+				OCR0A = speed;
+			} else {
+				OCR0B = speed;
+			}
 		}
 	}
 }
