@@ -22,8 +22,6 @@ int csPin[2]	=		{PB2, PB3};
 
 void initializePWM(void)
 {
-	/** Use Phase Correct PWM mode **/
-
 	// Use Inverting mode - output HIGH during count up, LOW during count down
 	//		- Bits COM0n1 and COM0n0 in the TCCR0n registers
 	//		  (timer/counter control registers) are set to 1
