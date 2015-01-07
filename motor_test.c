@@ -28,6 +28,9 @@ int main(void)
     LED_DDR |= (1 << LED);
 
 	while (1) {
+		motorRightGo(CW, 150);
+		motorLeftGo(CW, 75);
+
         // Turn on LED
         LED_PORT |= (1 << LED);
         _delay_ms(DELAYTIME);
@@ -35,7 +38,5 @@ int main(void)
         // Turn off LED
         LED_PORT &= ~(1 << LED);
         _delay_ms(DELAYTIME);
-
-		motorRightGo(CW, 150);
 	}
 }
