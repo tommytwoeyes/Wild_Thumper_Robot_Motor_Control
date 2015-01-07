@@ -12,14 +12,21 @@
 #include <stdint.h>
 
 // Motor variables
-#define LEFT_MOTOR					0
-#define RIGHT_MOTOR					1
+#define RIGHT_MOTOR_CONTROL_A		PD0
+#define RIGHT_MOTOR_CONTROL_B		PD2
+#define RIGHT_MOTOR_PWM				PB3
+#define RIGHT_MOTOR_CURRENT_SENSE	PB2
+#define LEFT_MOTOR_CONTROL_A		PD1
+#define LEFT_MOTOR_CONTROL_B		PD3
+#define LEFT_MOTOR_PWM				PB4
+#define RIGHT_MOTOR_CURRENT_SENSE	PB3
 #define MOTOR_DDR					DDRD
 #define MOTOR_PORT					PORTD
 #define MOTOR_PWM_DDR				DDRB
 #define MOTOR_PWM_PORT				PORTB
 #define MOTOR_CURRENT_SENSE_DDR		DDRB
 #define MOTOR_CURRENT_SENSE_PORT	PORTB
+// Direction of rotation variables
 #define BRAKEVCC					0
 #define CW							1
 #define CCW							2
@@ -43,12 +50,15 @@ void goReverseHardRight(uint8_t speed);
 void goReverseSoftRight(uint8_t speed);
 void pivotLeft(uint8_t speed);
 void pivotRight(uint8_t speed);
+void stopMotors(void);
 
 /** Low-level motor control **/
 // Low-level motor movement control
-void motorGo(uint8_t motor, uint8_t direction, uint8_t speed);
+void motorRightGo(uint8_t direction, uint8_t speed);
+void motorLeftGo(uint8_t direction, uint8_t speed);
 
 // Stop motor motion
-void motorStop(uint8_t motor);
+void motorRightStop(void);
+void motorLeftStop(void);
 
 #endif

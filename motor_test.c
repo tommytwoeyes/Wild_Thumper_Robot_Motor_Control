@@ -36,6 +36,6 @@ int main(void)
         LED_PORT &= ~(1 << LED);
         _delay_ms(DELAYTIME);
 
-		motorGo(RIGHT_MOTOR, CW, 50);
+		motorRightGo(CW, 150);
 	}
 }

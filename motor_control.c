@@ -12,14 +12,6 @@
 #include <avr/io.h>
 #include "motor_control.h"
 
-// VNH2SP30 motor controller IC pin definitions
-//		e.g. xxxx[0] controls motor channel 1 output
-//			 xxxx[1] controls motor channel 2 output
-int inApin[2]	= 		{PD0, PD1};
-int inBpin[2]	=		{PD2, PD3};
-int pwmPin[2]	=		{PB3, PB4};   // PWM set using OCR0A (PB3) and OCR0B (PB4)
-int csPin[2]	=		{PB2, PB3};
-
 void initializePWM(void)
 {
 	// Use Inverting mode - output HIGH during count up, LOW during count down
@@ -27,6 +19,8 @@ void initializePWM(void)
 	//		  (timer/counter control registers) are set to 1
 	//		  Note: you have to set COM0A1, COM0A0 and COM0B1, COM0B0
 	// 		  in order to use both OC0A and OC0B pwm pins
+	// TCCR0A = 0b11110001
+	// TCCR0B = 0b00000010
 	TCCR0A |= (1 << COM0A1);
 	TCCR0A |= (1 << COM0A0);
 	TCCR0A |= (1 << COM0B1);
@@ -63,50 +57,45 @@ void initializePWM(void)
 // Initialize motor control pins
 void initializeMotors(void)
 {
-	int outputPin, inputPin;
-
 	// Configure motor control pins for OUTPUT
-	for (outputPin=0; outputPin<2; outputPin++) {
-		MOTOR_DDR |= (1 << inApin[outputPin]);
-		MOTOR_DDR |= (1 << inBpin[outputPin]);
-		MOTOR_PWM_DDR |= (1 << pwmPin[outputPin]);
-	}
+	MOTOR_DDR |= (1 << RIGHT_MOTOR_CONTROL_A) | (1 << RIGHT_MOTOR_CONTROL_B);
+	MOTOR_DDR |= (1 << LEFT_MOTOR_CONTROL_A) | (1 << LEFT_MOTOR_CONTROL_B);
+	MOTOR_PWM_DDR |= (1 << RIGHT_MOTOR_PWM) | (1 << LEFT_MOTOR_PWM);
 
 	// Configure motor current-sense pins for INPUT
 	// (this is not strictly necessary, since all ATmega
 	// pins default to the INPUT state, but explicitly
 	// setting them as INPUT may help to avoid difficult-
 	// to-debug problems later).
-	for (inputPin=0; inputPin<2; inputPin++) {
-		MOTOR_CURRENT_SENSE_DDR &= ~(1 << csPin[inputPin]);
-	}
+	MOTOR_CURRENT_SENSE_DDR &= ~(1 << RIGHT_MOTOR_CURRENT_SENSE);
+	MOTOR_CURRENT_SENSE_DDR &= ~(1 << LEFT_MOTOR_CURRENT_SENSE);
 
 	// Ensure the motors are braked when initialized
 	OCR0A = OCR0B = 0;
-	for (int i=0; i<2; i++) {
-		MOTOR_PORT &= ~(1 << inApin[i]);
-		MOTOR_PORT &= ~(1 << inBpin[i]);
-	}
+	MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_A);
+	MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_B);
+	MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_A);
+	MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_B);
 }
 
 
 /** High-level motor control **/
 void goForward(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CCW, speed);
-	motorGo(RIGHT_MOTOR, CW, speed);
+	motorGo(CCW, speed);
+	motorGo(CW, speed);
 }
 
 void goReverse(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CW, speed);
-	motorGo(RIGHT_MOTOR, CCW, speed);
+	motorGo(CW, speed);
+	motorGo(CCW, speed);
 }
 
 void goHardLeft(uint8_t speed)
 {
-	motorStop(LEFT_MOTOR);
-	motorGo(RIGHT_MOTOR, CW, speed);
+	motorLeftStop();
+	motorGo(CW, speed);
 }
 
 void goSoftLeft(uint8_t speed)
@@ -115,15 +104,15 @@ void goSoftLeft(uint8_t speed)
 	// turn quite as sharply
 	uint8_t leftMotorSpeed = ceil(speed / 2);
 
-	motorGo(LEFT_MOTOR, CCW, leftMotorSpeed);
-	motorGo(RIGHT_MOTOR, CW, speed);
+	motorGo(CCW, leftMotorSpeed);
+	motorGo(CW, speed);
 }
 
 
 void goHardRight(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CCW, speed);
-	motorStop(RIGHT_MOTOR);
+	motorGo(CCW, speed);
+	motorRightStop();
 }
 
 void goSoftRight(uint8_t speed)
@@ -132,15 +121,15 @@ void goSoftRight(uint8_t speed)
 	// turn quite as sharply
 	uint8_t rightMotorSpeed = ceil(speed / 2);
 
-	motorGo(LEFT_MOTOR, CCW, speed);
-	motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
+	motorGo(CCW, speed);
+	motorGo(CW, rightMotorSpeed);
 }
 
 
 void goReverseHardLeft(uint8_t speed)
 {
-	motorStop(LEFT_MOTOR);
-	motorGo(RIGHT_MOTOR, CCW, speed);
+	motorLeftStop();
+	motorGo(CCW, speed);
 }
 
 void goReverseSoftLeft(uint8_t speed)
@@ -149,37 +138,43 @@ void goReverseSoftLeft(uint8_t speed)
 	// turn quite as sharply
 	uint8_t leftMotorSpeed = ceil(speed / 2);
 
-	motorGo(LEFT_MOTOR, CW, leftMotorSpeed);
-	motorGo(RIGHT_MOTOR, CCW, speed);
+	motorGo(CW, leftMotorSpeed);
+	motorGo(CCW, speed);
 }
 
 
 void goReverseHardRight(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CW, speed);
-	motorStop(RIGHT_MOTOR);
+	motorGo(CW, speed);
+	motorRightStop();
 }
 
 void goReverseSoftRight(uint8_t speed)
 {
 	uint8_t rightMotorSpeed = ceil(speed / 2);
 
-	motorGo(LEFT_MOTOR, CCW, speed);
-	motorGo(RIGHT_MOTOR, CW, rightMotorSpeed);
+	motorGo(CCW, speed);
+	motorGo(CW, rightMotorSpeed);
 }
 
 
 void pivotLeft(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CW, speed);
-	motorGo(RIGHT_MOTOR, CW, speed);
+	motorGo(CW, speed);
+	motorGo(CW, speed);
 }
 
 
 void pivotRight(uint8_t speed)
 {
-	motorGo(LEFT_MOTOR, CCW, speed);
-	motorGo(RIGHT_MOTOR, CCW, speed);
+	motorGo(CCW, speed);
+	motorGo(CCW, speed);
+}
+
+void stopMotors()
+{
+	motorRightStop();
+	motorLeftStop();
 }
 
 
@@ -190,12 +185,6 @@ void pivotRight(uint8_t speed)
  * rotate in the specified direction at the specified speed until
  * it's behavior is modified by another function call (to this or
  * another function)
- *
- * @param motor : integer : Should be either 0 or 1. Selects motor to
- * 							 act on.
- * 							 Corresponds to
- * 							 the index of the motor in one of the arrays
- * 							 inApin, inBpin, or pwmPin
  *
  * @param direction : integer : Should be between 0 and 3, with the
  * 								 following meaning:
@@ -209,54 +198,91 @@ void pivotRight(uint8_t speed)
  * 						   Larger numbers = more speed
  * 						   Smaller numbers = less speed
  */
-void motorGo(uint8_t motor, uint8_t direction, uint8_t speed)
+void motorRightGo(uint8_t direction, uint8_t speed)
 {
-	if (motor <= 1) {     // Ensure motor ID is valid
+	if (direction < 4) {	// Ensure direction is valid
 
-		if (direction <= 4) {	// Ensure direction is valid
+		if (direction <= 1)
+			MOTOR_PORT |= (1 << RIGHT_MOTOR_CONTROL_A);
+		else
+			MOTOR_PORT &= (1 << RIGHT_MOTOR_CONTROL_A;
 
-			// Set inA[motor]
-			if (direction <= 1)
-				MOTOR_PORT |= (1 << inApin[motor]);
-			else
-				MOTOR_PORT &= (1 << inApin[motor]);
-
-			// Set inB[motor]
-			if ( (direction == 0) || (direction == 2) )
-				MOTOR_PORT |= (1 << inBpin[motor]);
-			else
-				MOTOR_PORT &= ~(1 << inBpin[motor]);
+		if ( (direction == 0) || (direction == 2) )
+			MOTOR_PORT |= (1 << RIGHT_MOTOR_CONTROL_B);
+		else
+			MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_B);
 
 
-			// Set speed
-			if (speed < 0)
-				speed = 0;
-			if (speed > 255)
-				speed = 255;
+		// Ensure speed is within bounds
+		if (speed < 0)
+			speed = 0;
+		if (speed > 255)
+			speed = 255;
 
-			if (motor == 0) {
-				OCR0A = speed;
-			} else {
-				OCR0B = speed;
-			}
-		}
+		// Set speed
+		OCR0A = speed;
 	}
 }
 
-// Stop motor motion
-void motorStop(uint8_t motor)
+/**
+ * Will power motor in specified direction. Motor will continue to
+ * rotate in the specified direction at the specified speed until
+ * it's behavior is modified by another function call (to this or
+ * another function)
+ *
+ * @param direction : integer : Should be between 0 and 3, with the
+ * 								 following meaning:
+ * 									0 = Brake to VCC (??? - this was copied from Sparkfun's library. See link in comments at top)
+ * 									1 = Clockwise
+ * 									2 = CounterClockwise
+ * 									3 = Brake to GND (??? - this was copied from Sparkfun's library. See link in comments at top)
+ *
+ * @param speed : integer : Controls motor PWM duty cycle
+ * 						   Should be a value between 0 and 255.
+ * 						   Larger numbers = more speed
+ * 						   Smaller numbers = less speed
+ */
+void motorLeftGo(uint8_t direction, uint8_t speed)
 {
-	int i; // counter
+	if (direction < 4) {	// Ensure direction is valid
 
-	for (i=0; i<2; i++) {
-		MOTOR_PORT &= ~(1 << inApin[i]);
-		MOTOR_PORT &= ~(1 << inBpin[i]);
+		if (direction <= 1)
+			MOTOR_PORT |= (1 << LEFT_MOTOR_CONTROL_A);
+		else
+			MOTOR_PORT &= (1 << LEFT_MOTOR_CONTROL_A;
+
+		if ( (direction == 0) || (direction == 2) )
+			MOTOR_PORT |= (1 << LEFT_MOTOR_CONTROL_B);
+		else
+			MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_B);
+
+		// Ensure speed is within bounds
+		if (speed < 0)
+			speed = 0;
+		if (speed > 255)
+			speed = 255;
+
+		// Set speed
+		OCR0A = speed;
 	}
+}
+
+// Stop right motor
+void motorRightStop()
+{
+	MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_A);
+	MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_B);
 
 	// 0% duty cycle == stopped
-	if (motor == 0) {
-		OCR0A = 0;
-	} else {
-		OCR0B = 0;
-	}
+	OCR0A = 0;
+}
+
+// Stop left motor
+void motorLeftStop()
+{
+	MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_A);
+	MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_B);
+
+	// 0% duty cycle == stopped
+	OCR0B = 0;
 }
