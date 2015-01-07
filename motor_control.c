@@ -27,24 +27,37 @@ void initializePWM(void)
 	//		  (timer/counter control registers) are set to 1
 	//		  Note: you have to set COM0A1, COM0A0 and COM0B1, COM0B0
 	// 		  in order to use both OC0A and OC0B pwm pins
-	TCCR0A |= (1 << COM0A1) | (1 << COM0A0);
+	TCCR0A |= (1 << COM0A1);
+	TCCR0A |= (1 << COM0A0);
+	TCCR0A |= (1 << COM0B1);
+	TCCR0A |= (1 << COM0B0);
 
 	// Use Phase-Correct PWM mode
-	// Counter counts up to TOP of 255 (as opposed to user-defined TOP value)
-	//		- WGM02 = 0 (in register TCCR0B), WGM01 = 0, WGM00 = 1 (register TCCR0A)
+	// Counter counts up to TOP, then counts back down to 0 (as opposed
+	// to overflowing and restarting at 0, as in Fast PWM mode)
+	// TOP is set to 255
+	// - WGM02 = 0 (register TCCR0B), WGM01 = 0, WGM00 = 1 (register TCCR0A)
 	TCCR0A |= (1 << WGM00);
 	TCCR0A &= ~(1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
 	TCCR0B &= ~(1 << WGM02);
+
+	// According to the datasheet, the Force Output Compare bits in TCCR0B
+	// must be set to zero when operating in any PWM mode, to ensure
+	// compatibility with future devices.
+	// Explicitly set FOC0A and FOC0B to zero, just in case
+	TCCR0B &= ~(1 << FOC0A);
+	TCCR0B &= ~(1 << FOC0B);
 
 	// Configure clock speed: the Monster Moto shield can only handle
 	//		up to 20kHz PWM frequency, so:
 	//		use IO clock with no prescaling
 	//		F_CPU / Prescaler value / Number of steps
-	//		(256 for 8-bit timer, 65536 for 16-bit timer)
-	//		1000000 / 1 / 256 = about 3.9kHz
-	TCCR0B &= ~(1 << CS02);
-	TCCR0B &= ~(1 << CS01);
-	TCCR0B |= (1 << CS00);
+	//		(510 for 8-bit timer in Phase Correct mode (count up/down)
+	//		65536 for 16-bit timer)
+	//		16000000 / 8 / 510 = about 3.9kHz
+	TCCR0B &= ~(1 << CS02);  // Prescaler val of 8:
+	TCCR0B |= (1 << CS01);   // CS02 = 0, CS01 = 1
+	TCCR0B &= ~(1 << CS00);	 // CS00 = 0
 }
 
 // Initialize motor control pins
