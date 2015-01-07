@@ -82,6 +82,7 @@ void initializeMotors(void)
 	}
 
 	// Ensure the motors are braked when initialized
+	OCR0A = OCR0B = 0;
 	for (int i=0; i<2; i++) {
 		MOTOR_PORT &= ~(1 << inApin[i]);
 		MOTOR_PORT &= ~(1 << inBpin[i]);
