@@ -82,20 +82,20 @@ void initializeMotors(void)
 /** High-level motor control **/
 void goForward(uint8_t speed)
 {
-	motorGo(CCW, speed);
-	motorGo(CW, speed);
+	motorLeftGo(CCW, speed);
+	motorRightGo(CW, speed);
 }
 
 void goReverse(uint8_t speed)
 {
-	motorGo(CW, speed);
-	motorGo(CCW, speed);
+	motorLeftGo(CW, speed);
+	motorRightGo(CCW, speed);
 }
 
 void goHardLeft(uint8_t speed)
 {
 	motorLeftStop();
-	motorGo(CW, speed);
+	motorRightGo(CW, speed);
 }
 
 void goSoftLeft(uint8_t speed)
@@ -104,14 +104,14 @@ void goSoftLeft(uint8_t speed)
 	// turn quite as sharply
 	uint8_t leftMotorSpeed = ceil(speed / 2);
 
-	motorGo(CCW, leftMotorSpeed);
-	motorGo(CW, speed);
+	motorLeftGo(CCW, leftMotorSpeed);
+	motorRightGo(CW, speed);
 }
 
 
 void goHardRight(uint8_t speed)
 {
-	motorGo(CCW, speed);
+	motorLeftGo(CCW, speed);
 	motorRightStop();
 }
 
@@ -121,15 +121,15 @@ void goSoftRight(uint8_t speed)
 	// turn quite as sharply
 	uint8_t rightMotorSpeed = ceil(speed / 2);
 
-	motorGo(CCW, speed);
-	motorGo(CW, rightMotorSpeed);
+	motorLeftGo(CCW, speed);
+	motorRightGo(CW, rightMotorSpeed);
 }
 
 
 void goReverseHardLeft(uint8_t speed)
 {
 	motorLeftStop();
-	motorGo(CCW, speed);
+	motorRightGo(CCW, speed);
 }
 
 void goReverseSoftLeft(uint8_t speed)
@@ -138,14 +138,14 @@ void goReverseSoftLeft(uint8_t speed)
 	// turn quite as sharply
 	uint8_t leftMotorSpeed = ceil(speed / 2);
 
-	motorGo(CW, leftMotorSpeed);
-	motorGo(CCW, speed);
+	motorLeftGo(CW, leftMotorSpeed);
+	motorRightGo(CCW, speed);
 }
 
 
 void goReverseHardRight(uint8_t speed)
 {
-	motorGo(CW, speed);
+	motorLeftGo(CW, speed);
 	motorRightStop();
 }
 
@@ -153,22 +153,22 @@ void goReverseSoftRight(uint8_t speed)
 {
 	uint8_t rightMotorSpeed = ceil(speed / 2);
 
-	motorGo(CCW, speed);
-	motorGo(CW, rightMotorSpeed);
+	motorLeftGo(CCW, speed);
+	motorRightGo(CW, rightMotorSpeed);
 }
 
 
 void pivotLeft(uint8_t speed)
 {
-	motorGo(CW, speed);
-	motorGo(CW, speed);
+	motorLeftGo(CW, speed);
+	motorRightGo(CW, speed);
 }
 
 
 void pivotRight(uint8_t speed)
 {
-	motorGo(CCW, speed);
-	motorGo(CCW, speed);
+	motorLeftGo(CCW, speed);
+	motorRightGo(CCW, speed);
 }
 
 void stopMotors()
@@ -205,7 +205,7 @@ void motorRightGo(uint8_t direction, uint8_t speed)
 		if (direction <= 1)
 			MOTOR_PORT |= (1 << RIGHT_MOTOR_CONTROL_A);
 		else
-			MOTOR_PORT &= (1 << RIGHT_MOTOR_CONTROL_A;
+			MOTOR_PORT &= ~(1 << RIGHT_MOTOR_CONTROL_A);
 
 		if ( (direction == 0) || (direction == 2) )
 			MOTOR_PORT |= (1 << RIGHT_MOTOR_CONTROL_B);
@@ -249,7 +249,7 @@ void motorLeftGo(uint8_t direction, uint8_t speed)
 		if (direction <= 1)
 			MOTOR_PORT |= (1 << LEFT_MOTOR_CONTROL_A);
 		else
-			MOTOR_PORT &= (1 << LEFT_MOTOR_CONTROL_A;
+			MOTOR_PORT &= ~(1 << LEFT_MOTOR_CONTROL_A);
 
 		if ( (direction == 0) || (direction == 2) )
 			MOTOR_PORT |= (1 << LEFT_MOTOR_CONTROL_B);
