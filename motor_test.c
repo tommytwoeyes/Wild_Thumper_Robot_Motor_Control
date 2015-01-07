@@ -16,7 +16,7 @@
 #define LED         PB0
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
-#define DELAYTIME   5000
+#define DELAYTIME   800
 
 int main(void)
 {
