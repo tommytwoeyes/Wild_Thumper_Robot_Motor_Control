@@ -48,7 +48,7 @@ void initializePWM(void)
 	//		F_CPU / Prescaler value / Number of steps
 	//		(510 for 8-bit timer in Phase Correct mode (count up/down)
 	//		65536 for 16-bit timer)
-	//		1000000 / 1 / 510 = about 2kHz
+	//		1000000 / 8 / 510 = about 2kHz
 	TCCR0B &= ~(1 << CS02);  // Prescaler val of 8:
 	TCCR0B |= (1 << CS01);   // CS02 = 0, CS01 = 1
 	TCCR0B &= ~(1 << CS00);	 // CS00 = 0
