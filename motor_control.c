@@ -26,13 +26,17 @@ void initializePWM(void)
 	TCCR0A |= (1 << COM0B1);
 	TCCR0A &= ~(1 << COM0B0);
 
+/*
 	// Use Phase-Correct PWM mode
 	// Counter counts up to TOP, then counts back down to 0 (as opposed
 	// to overflowing and restarting at 0, as in Fast PWM mode)
 	// TOP is set to 255
 	// - WGM02 = 0 (register TCCR0B), WGM01 = 0, WGM00 = 1 (register TCCR0A)
+*/
+	// Use Fast PWM mode
+	// WGM02 = 0 (reg TCCR0B), WGM01 = 1, WGM00 = 1 (reg TCCR0A)
 	TCCR0A |= (1 << WGM00);
-	TCCR0A &= ~(1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
+	TCCR0A |= (1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
 	TCCR0B &= ~(1 << WGM02);
 
 /*
