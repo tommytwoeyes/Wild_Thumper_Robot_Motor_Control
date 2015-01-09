@@ -50,7 +50,7 @@ void initializePWM(void)
 	//		65536 for 16-bit timer)
 	//		1000000 / 1 / 510 = about 2kHz
 	TCCR0B &= ~(1 << CS02);  // Prescaler val of 8:
-	TCCR0B |= (1 << CS00);   // CS02 = 0, CS01 = 1
+	TCCR0B |= (1 << CS01);   // CS02 = 0, CS01 = 1
 	TCCR0B &= ~(1 << CS00);	 // CS00 = 0
 }
 
@@ -263,7 +263,7 @@ void motorLeftGo(uint8_t direction, uint8_t speed)
 			speed = 255;
 
 		// Set speed
-		OCR0A = speed;
+		OCR0B = speed;
 	}
 }
 
