@@ -14,17 +14,17 @@
 
 void initializePWM(void)
 {
-	// Use Inverting mode - output HIGH during count up, LOW during count down
+	// Use Non-Inverting mode - output LOW during count up, HIGH during count down
 	//		- Bits COM0n1 and COM0n0 in the TCCR0n registers
 	//		  (timer/counter control registers) are set to 1
 	//		  Note: you have to set COM0A1, COM0A0 and COM0B1, COM0B0
 	// 		  in order to use both OC0A and OC0B pwm pins
-	// TCCR0A = 0b11110001
+	// TCCR0A = 0b10100001
 	// TCCR0B = 0b00000010
 	TCCR0A |= (1 << COM0A1);
-	TCCR0A |= (1 << COM0A0);
+	TCCR0A &= ~(1 << COM0A0);
 	TCCR0A |= (1 << COM0B1);
-	TCCR0A |= (1 << COM0B0);
+	TCCR0A &= ~(1 << COM0B0);
 
 	// Use Phase-Correct PWM mode
 	// Counter counts up to TOP, then counts back down to 0 (as opposed
@@ -35,12 +35,14 @@ void initializePWM(void)
 	TCCR0A &= ~(1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
 	TCCR0B &= ~(1 << WGM02);
 
+/*
 	// According to the datasheet, the Force Output Compare bits in TCCR0B
 	// must be set to zero when operating in any PWM mode, to ensure
 	// compatibility with future devices.
 	// Explicitly set FOC0A and FOC0B to zero, just in case
 	TCCR0B &= ~(1 << FOC0A);
 	TCCR0B &= ~(1 << FOC0B);
+*/
 
 	// Configure clock speed: the Monster Moto shield can only handle
 	//		up to 20kHz PWM frequency, so:
