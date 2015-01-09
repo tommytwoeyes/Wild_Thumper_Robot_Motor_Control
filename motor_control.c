@@ -22,9 +22,7 @@ void initializePWM(void)
 	// TCCR0A = 0b10100001
 	// TCCR0B = 0b00000010
 	TCCR0A |= (1 << COM0A1);
-	TCCR0A &= ~(1 << COM0A0);
 	TCCR0A |= (1 << COM0B1);
-	TCCR0A &= ~(1 << COM0B0);
 
 /*
 	// Use Phase-Correct PWM mode
@@ -36,8 +34,10 @@ void initializePWM(void)
 	// Use Fast PWM mode
 	// WGM02 = 0 (reg TCCR0B), WGM01 = 1, WGM00 = 1 (reg TCCR0A)
 	TCCR0A |= (1 << WGM00);
-	TCCR0A |= (1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
+	/*
+	TCCR0A &= ~(1 << WGM01); // Not strictly necessary to set to 0 explicitly, but safer
 	TCCR0B &= ~(1 << WGM02);
+	*/
 
 /*
 	// According to the datasheet, the Force Output Compare bits in TCCR0B
@@ -55,9 +55,7 @@ void initializePWM(void)
 	//		(510 for 8-bit timer in Phase Correct mode (count up/down)
 	//		65536 for 16-bit timer)
 	//		1000000 / 8 / 510 = about 2kHz
-	TCCR0B &= ~(1 << CS02);  // Prescaler val of 8:
-	TCCR0B |= (1 << CS01);   // CS02 = 0, CS01 = 1
-	TCCR0B &= ~(1 << CS00);	 // CS00 = 0
+	TCCR0B |= (1 << CS01);   // CS02 = 0, CS01 = 1, CS00 = 0
 }
 
 // Initialize motor control pins
